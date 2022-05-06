@@ -1,0 +1,72 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: "mymutatingwebhook.example.com"
+webhooks:
+- name: "mymutatingwebhook.example.com"
+  namespaceSelector:
+    matchLabels:
+      webhook: enabled
+  rules:
+  - apiGroups:   [""]
+    apiVersions: ["v1"]
+    operations:  ["CREATE"]
+    resources:   ["pods"]
+  clientConfig:
+    service:
+      namespace: "mutatingwebhook"
+      name: "mutatingwebhook"
+      path: "/webhook"
+    # caBundle: "cGxhY2Vob2xkZXIK"
+    caBundle: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUZ4ekNDQTYrZ0F3SUJBZ0lDQitNd0RRWUpLb1pJaHZjTkFRRUxCUUF3ZFRFTE1Ba0dBMVVFQmhNQ1ZWTXgKQ1RBSEJnTlZCQWdUQURFV01CUUdBMVVFQnhNTlUyRnVJRVp5WVc1amFYTmpiekViTUJrR0ExVUVDUk1TUjI5cwpaR1Z1SUVkaGRHVWdRbkpwWkdkbE1RNHdEQVlEVlFRUkV3VTVOREF4TmpFV01CUUdBMVVFQ2hNTlEyOXRjR0Z1CmVTd2dTVTVETGpBZUZ3MHlNakExTURZeU1ESTBNalJhRncwek1qQTFNRFl5TURJME1qUmFNSFV4Q3pBSkJnTlYKQkFZVEFsVlRNUWt3QndZRFZRUUlFd0F4RmpBVUJnTlZCQWNURFZOaGJpQkdjbUZ1WTJselkyOHhHekFaQmdOVgpCQWtURWtkdmJHUmxiaUJIWVhSbElFSnlhV1JuWlRFT01Bd0dBMVVFRVJNRk9UUXdNVFl4RmpBVUJnTlZCQW9UCkRVTnZiWEJoYm5rc0lFbE9ReTR3Z2dJaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQ0R3QXdnZ0lLQW9JQ0FRRGoKZDQrY1NPdm1acW1PZUVZVEVXQ1k3NHFrVU55Y2tudHVYMituZ0EwTXJhNHUzZzlaNHVsdWFWSFZXTE0rS1cyKwpNcnBRQWlzeHRSMDFWRGVIZ0N5QWltQWxhVDkzVFpMbmhnSG9nSGFsdjI1cURlcDBFV2JJNlR1Nkl0cU04RnNkCmIvTGRUc08yQkQveUpKRC9adEg5aVpDUjdYNXg1RFkvdHR0UDlQMHNwY3U2UkY5L1o2ZVdleUM3aS96ZFYrMGkKeEhkU0JxK0ptSE4zZWpWUFk1V2VheSsxSzZiZWg2dDdTcHlvT3Q2dENDdVNUTzQvVGFWcUs3L0xRTEhRMWgyeApWa2pyeUR1SDE0S2V4QTRhK0pBUTlMZ0JPMmxMYk02bC90bGdUelh1b1JHZzhxMkZMT0g2ZXZSQ2lIY1g3cGZxCjdiUlFiemVOS3ZoNFlZZ0VxbkF1K2dvejlaRFVrNW54WlBrNG0wWndtZ3gvZWEwb0JXVU9yK0JrN0FUbVBMN20KcXdzdW9hNWgrc3FyblI4K1JxOGduTi8ySWJOSWNPbXlsNkx1T0g2R3VNQm9oU3hOeituSXhMVWNKMklxb0Nsbgp6SkhmYkNNdjdqdStWaDhkZm16bkp4RTZZRDZDZzlaWGZNTmFXZEJsUFBlbndLM2c4R0xRZmRESWZtQTZjNDlEClhQem9iREl5UkhiR0lXMGMwSENybFBtVHdkYTdMcDBFWVNXRm0xUDBnajFHbm0wWmE1ckRYOS9rb3hKUjAzUkYKaXFHMnp4QlRwTi9xcnhkODd2dldseXRyU0xZSFUwSlFrTUhqQjd4OHJWTUxOZmE3eExoRDlmbjc4KzJ4NUxCNgpSVDFLVXhjeUlTMUdKRTlkR3ZjY3U3LzRacmMzYVc5V3NuUE9tU3VKL3dJREFRQUJvMkV3WHpBT0JnTlZIUThCCkFmOEVCQU1DQW9Rd0hRWURWUjBsQkJZd0ZBWUlLd1lCQlFVSEF3SUdDQ3NHQVFVRkJ3TUJNQThHQTFVZEV3RUIKL3dRRk1BTUJBZjh3SFFZRFZSME9CQllFRktJOGMxR1liUG1oRzF0OE12dzJHeG10M1VnQ01BMEdDU3FHU0liMwpEUUVCQ3dVQUE0SUNBUURjWmRUbFA4UVVnTlhDNmpRbDlvY0JVVUFLeWhEcHFyUjdPS0ZQajdvT1FwaFVYS0tDCjhlUm42UUNjU1h4RFVxblVCYUxOU2RUZ0YrY2t1d2o4UDlicDZ5N2NqNVlJTFB4UGFwVzNLYUdqMGk3RHM1OCsKUUdLRElCZ2F6ZU9zZ0tPd1JrMkp4aTFUakZIRlNlNWViODhpVHpWYmlYYllNVzZUamxXVXpQWmNiWmpmOERuQgo4eHRyblkrR05mZFFRTXM1OUoxNG1keFFEYi82UkxBVGQ1cnFBTW0rOHM0eGcrK3psSnk1VU5UVDJLOXNKai90ClRYQTNxdjZaY0dqMHRIVkt6emlVKzl5M1FQanYxc29RNXExREdyS0dma1hpTXJFbFhwenBtdjRJTk1WVlhXdzcKeXJqT1JBVVJLRGhJUnVNV3FCNTQ2bzk1NkVjK3VWSWJBcnZnaWpSUjNxZWZYNHhjQ3B3eERTTVFvQ0dWRmtwMgpUSTg4bklrOEduQkZYM3VsM2VmcXVXVi8rSzdVMld0S0xSYmp4MjhyaVBxRzlLc2UrMkY5VXpDSVJ5WTNYVmZuCkVSQ1pzeFlLM2p1OEdpcUxjVW9WWUdmb0lCazlhaDNGaU1jVXFoRGd5VzV3S2JZRXJOZFdndHE5dnpsZm9LQ3kKdFJxcmRVY3hUbEhxSFRoRVpWVlBSZUxkUWpiK00yQ1RMeWI1cU5kaG5tb1Z3SnQ4T09kUkFLRVVqdU9KZ1BRUgp1T1hXcFZmZ2ZZWFRlVnM1WnpEVy9NUWZ4UDlsdCtJVzI4UTRXOTRrTXBjTkhWb1NJUjFoc2NET05WRkp2ZG1GCi90ZWYra3RhUG5JUFlCMlhzUVZFVmRlSzlwYTQ3Uk11UWxjVHkzc05DVkZGZUlLY2FmNWNxTU05Y3c9PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg=="
+  admissionReviewVersions: ["v1", "v1beta1"]
+  sideEffects: None
+  timeoutSeconds: 5
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: mutatingwebhook
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: testmutatingwebhook
+  labels:
+    webhook: enabled
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mutatingwebhook
+  namespace: mutatingwebhook
+  labels:
+    app: mutatingwebhook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mutatingwebhook
+  template:
+    metadata:
+      labels:
+        app: mutatingwebhook
+    spec:
+      containers:
+      - name: mutatingwebhook
+        image: jinqin2003/mutatingwebhook:blue
+        ports:
+        - containerPort: 8443
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mutatingwebhook
+  namespace: mutatingwebhook
+spec:
+  selector:
+    app: mutatingwebhook
+  ports:
+    - protocol: TCP
+      port: 443
+      targetPort: 8443
